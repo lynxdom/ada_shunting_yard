@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "gprbuild",
+			"projectFile": "${workspaceFolder}/ada_shunting_algorithim/shuntingyardalgorithm.gpr",
+			"problemMatcher": [
+				"$ada"
+			],
+			"group": "build",
+			"label": "ada: Build Ada Shunting Algorithim Shared Object"
+		},
+		{
+			"type": "shell",
+			"label": "rust: cargo build shunting_test_rs",
+			"command": "cargo",
+			"args": [
+				"build"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/shunting_test_rs"
+			},
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build"
+		}
+	]
+}
