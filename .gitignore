@@ -1,5 +1,10 @@
+# Ada build output
 ada_shunting_algorithim/obj/
 ada_shunting_algorithim/lib/
 ada_shunting_algorithim/alire/
+
+# Configs that don't need to be tracked (optional)
 ada_shunting_algorithim/config/
+
+# Rust build output
 shunting_test_rs/target/
