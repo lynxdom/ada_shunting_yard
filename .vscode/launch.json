@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Rust in Debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/shunting_test_rs/target/debug/shunting_test_rs",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder}/ada_shunting_algorithim/lib:$LD_LIBRARY_PATH"
+            },
+            "stopOnEntry": false
+        },
+        {   
+            "name" : "Debug Ada",
+            "type": "gdb",
+            "request": "launch",
+            "target": "${workspaceFolder}/shunting_test_rs/target/debug/shunting_test_rs",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder}/ada_shunting_algorithim/lib:$LD_LIBRARY_PATH"
+            }
+            
+        }
+    ]
+}

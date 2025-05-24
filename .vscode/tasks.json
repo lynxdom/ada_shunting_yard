@@ -18,7 +18,8 @@
 				"build"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/shunting_test_rs"
+				"cwd": "${workspaceFolder}/shunting_test_rs",
+				"env": {"LD_LIBRARY_PATH" : "../ada_shunting_algorithim/lib"}
 			},
 			"problemMatcher": [
 				"$rustc"
