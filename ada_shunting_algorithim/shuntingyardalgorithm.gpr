@@ -15,11 +15,11 @@ project Shuntingyardalgorithm is
    for Library_Kind use Library_Type;
 
    package Compiler is
-      for Default_Switches ("Ada") use Shuntingyardalgorithm_Config.Ada_Compiler_Switches;
+      for Default_Switches ("Ada") use Shuntingyardalgorithm_Config.Ada_Compiler_Switches & ("-gnat12");
    end Compiler;
 
    package Binder is
-      for Switches ("Ada") use ("-fPIC -Es"); --  Symbolic traceback
+      for Switches ("Ada") use ("-fPIC","-Es","-d", "-D", "GNAT_SECONDARY_STACK_SIZE=10M", "-gnat12"); --  Symbolic traceback
    end Binder;
 
    package Install is

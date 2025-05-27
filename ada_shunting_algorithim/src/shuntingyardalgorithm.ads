@@ -3,17 +3,21 @@ with Interfaces.C.Strings;
 
 package ShuntingYardAlgorithm is
 
-    -- Call algorithim
+    --   Call algorithim
     procedure Shunting_Yard_Algorithm (
         In_Expression  : in Interfaces.C.Strings.chars_ptr;
         Out_Expression : out Interfaces.C.Strings.chars_ptr
     )
-    with Export, Convention => C, External_Name => "shunting_yard_algorithm";
+    with Export => True,
+         Convention => C,
+         External_Name => "shunting_yard_algorithm";
 
-    -- Cleanup string
+    --   Cleanup string
     procedure Free_String (
         str_ptr : in out Interfaces.C.Strings.chars_ptr
     )
-    with Export, Convention => C, External_Name => "free_string";
+    with Export => True,
+         Convention => C,
+         External_Name => "free_string";
 
 end ShuntingYardAlgorithm;

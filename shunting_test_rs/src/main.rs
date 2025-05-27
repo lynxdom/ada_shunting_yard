@@ -9,7 +9,31 @@ struct TokenizerTestCase {
     expected: &'static str,
 }
 
-const TEST_CASES : [ TokenizerTestCase; 38 ] = [
+const TEST_CASES : [ TokenizerTestCase; 56 ] = [
+
+    // Developer Cases
+    TokenizerTestCase { input: "-3 + -4", expected: "-3 -4 +" },
+    TokenizerTestCase { input: "-3.5 + -4.25", expected: "-3.5 -4.25 +" },
+    TokenizerTestCase { input: "6.0 - -2.5", expected: "6.0 -2.5 -" },
+    TokenizerTestCase { input: "-1.2e3 + -3.4e-2", expected: "-1.2e3 -3.4e-2 +"},
+    TokenizerTestCase { input: "-7 + -0.5", expected: "-7 -0.5 +" },
+    TokenizerTestCase { input: "-2.5 * -1e-2", expected: "-2.5 -1e-2 *" },
+    TokenizerTestCase { input: "(-3.5 + -4.5) * -2.0", expected: "-3.5 -4.5 + -2.0 *" },
+
+    // Developer Cases with Inconsistent Whitespace
+    TokenizerTestCase { input: " -3+    -4", expected: "-3 -4 +" },
+    TokenizerTestCase { input: "-3.5+  -4.25 ", expected: "-3.5 -4.25 +" },
+    TokenizerTestCase { input: " 6.0 -    -2.5", expected: "6.0 -2.5 -" },
+    TokenizerTestCase { input: "-1.2e3   + -3.4e-2", expected: "-1.2e3 -3.4e-2 +" },
+    TokenizerTestCase { input: " -7+  -0.5 ", expected: "-7 -0.5 +" },
+    TokenizerTestCase { input: "  -2.5   * -1e-2 ", expected: "-2.5 -1e-2 *" },
+    TokenizerTestCase { input: "  (  -3.5+  -4.5  )* -2.0", expected: "-3.5 -4.5 + -2.0 *" },
+
+    // Basic Arithmetic with Inconsistent Whitespace
+    TokenizerTestCase { input: "2+3", expected: "2 3 +" },
+    TokenizerTestCase { input: " 4  -1 ", expected: "4 1 -" },
+    TokenizerTestCase { input: " 6*     7", expected: "6 7 *" },
+    TokenizerTestCase { input: " 8 /2 ", expected: "8 2 /" },
 
     // Basic Arithmatec
     TokenizerTestCase { input: "2 + 3", expected: "2 3 +" },
@@ -69,6 +93,7 @@ const TEST_CASES : [ TokenizerTestCase; 38 ] = [
 
 // FFI call wrapper
 fn call_tokenizer_ffi(input: &str) -> String {
+    std::env::set_var("GNAT_SECONDARY_STACK_SIZE", "10M");
     let c_input = CString::new(input).expect("CString Failed");
     let mut output_ptr: *mut i8 = ptr::null_mut();
 
@@ -89,7 +114,14 @@ fn call_tokenizer_ffi(input: &str) -> String {
 
 fn main() {
     for test_case in &TEST_CASES {
-        let actual = call_tokenizer_ffi(test_case.input);
+        let actual = std::thread::Builder::new()
+            .stack_size(12 * 1024 * 1024) // 2MB stack for Ada
+            .spawn(|| {
+                call_tokenizer_ffi(test_case.input)
+            })
+            .unwrap()
+            .join()
+            .unwrap();
 
         if actual.trim() == test_case.expected {
             println!("✅ PASS: `{}` → `{}`", test_case.input, actual);

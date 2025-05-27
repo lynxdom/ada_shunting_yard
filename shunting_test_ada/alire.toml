@@ -1,0 +1,11 @@
+name = "shunting_test_ada"
+description = "Executable to test .so"
+version = "0.1.0-dev"
+
+authors = ["Sean Alexander"]
+maintainers = ["Sean Alexander <example@example.com>"]
+licenses = "MIT OR Apache-2.0 WITH LLVM-exception"
+website = ""
+tags = []
+
+executables = ["shunting_test_ada"]

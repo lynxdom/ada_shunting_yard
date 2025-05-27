@@ -8,3 +8,6 @@ ada_shunting_algorithim/config/
 
 # Rust build output
 shunting_test_rs/target/
+
+# cpp
+shunting_test_cpp/build/

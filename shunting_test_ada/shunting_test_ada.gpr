@@ -1,0 +1,26 @@
+with "config/shunting_test_ada_config.gpr";
+project Shunting_Test_Ada is
+
+   for Source_Dirs use ("src/", "config/");
+   for Object_Dir use "obj/" & Shunting_Test_Ada_Config.Build_Profile;
+   for Create_Missing_Dirs use "True";
+   for Exec_Dir use "bin";
+   for Main use ("shunting_test_ada.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use Shunting_Test_Ada_Config.Ada_Compiler_Switches;
+   end Compiler;
+
+   package Linker is
+      for Default_Switches ("Ada") use ("-L/mnt/sda1/projects/Algorithims/Ada/shuntingyardalgorithm/ada_shunting_algorithim/lib", "-lShuntingyardalgorithm");
+   end Linker;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+end Shunting_Test_Ada;

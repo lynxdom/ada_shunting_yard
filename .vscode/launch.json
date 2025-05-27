@@ -17,15 +17,49 @@
             "stopOnEntry": false
         },
         {   
-            "name" : "Debug Ada",
+            "name" : "Debug Rust",
             "type": "gdb",
             "request": "launch",
             "target": "${workspaceFolder}/shunting_test_rs/target/debug/shunting_test_rs",
             "cwd": "${workspaceFolder}",
             "env": {
-                "LD_LIBRARY_PATH": "${workspaceFolder}/ada_shunting_algorithim/lib:$LD_LIBRARY_PATH"
+                "LD_LIBRARY_PATH": "${workspaceFolder}/ada_shunting_algorithim/lib:$LD_LIBRARY_PATH",
+                "GNAT_SECONDARY_STACK_SIZE": "100M"
             }
             
+        },
+        {   
+            "name" : "Debug cpp",
+            "type": "gdb",
+            "request": "launch",
+            "target": "${workspaceFolder}/shunting_test_cpp/build/shunting_test",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder}/ada_shunting_algorithim/lib:$LD_LIBRARY_PATH",
+                "GNAT_SECONDARY_STACK_SIZE": "100M"
+            }
+        },
+        {   
+            "name" : "Debug Ada",
+            "type": "gdb",
+            "request": "launch",
+            "target": "${workspaceFolder}/shunting_test_ada/bin/shunting_test_ada",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder}/ada_shunting_algorithim/lib:$LD_LIBRARY_PATH",
+                "GNAT_SECONDARY_STACK_SIZE": "100M"
+            }
+        },
+        {   
+            "name" : "Debug Ada Direct",
+            "type": "gdb",
+            "request": "launch",
+            "target": "${workspaceFolder}/shunting_test_direct/bin/shunting_test_direct",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "LD_LIBRARY_PATH": "${workspaceFolder}/ada_shunting_algorithim/lib:$LD_LIBRARY_PATH",
+                "GNAT_SECONDARY_STACK_SIZE": "100M"
+            }
         }
     ]
 }

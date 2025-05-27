@@ -7,6 +7,11 @@
 			"problemMatcher": [
 				"$ada"
 			],
+			"options": {
+				"env": { 
+					"GNAT_SECONDARY_STACK_SIZE" : "10M"
+				}
+			},
 			"group": "build",
 			"label": "ada: Build Ada Shunting Algorithim Shared Object"
 		},
@@ -25,6 +30,34 @@
 				"$rustc"
 			],
 			"group": "build"
+		},
+		{
+			"type": "gprbuild",
+			"projectFile": "${workspaceFolder}/shunting_test_ada/shunting_test_ada.gpr",
+			"problemMatcher": [
+				"$ada"
+			],
+			"options": {
+				"env": { 
+					"GNAT_SECONDARY_STACK_SIZE" : "10M"
+				}
+			},
+			"group": "build",
+			"label": "ada: Build Ada Shunting Algorithim Test"
+		},
+		{
+			"type": "gprbuild",
+			"projectFile": "${workspaceFolder}/shunting_test_direct/shunting_test_direct.gpr",
+			"problemMatcher": [
+				"$ada"
+			],
+			"options": {
+				"env": { 
+					"GNAT_SECONDARY_STACK_SIZE" : "10M"
+				}
+			},
+			"group": "build",
+			"label": "ada: Build Ada Direct Test"
 		}
 	]
 }
