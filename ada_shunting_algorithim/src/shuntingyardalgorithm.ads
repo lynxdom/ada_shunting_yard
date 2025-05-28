@@ -8,15 +8,21 @@ package ShuntingYardAlgorithm is
         Size : Natural;
     package Stack_Package is
 
-        procedure Push (New_Item : Element);
-        function Pop return Element;
+        type Stack is tagged private;
+
+        procedure Push (Stack_Object : in out Stack;
+                        New_Item : Element);
+        function Pop (Stack_Object : in out Stack) return Element;
+        function Empty (Stack_Object : in out Stack) return Boolean;
 
     private
-        type Stack is array (Natural range 1 .. Size) of Element;
+        type Stack_Array is array (Natural range 1 .. Size) of Element;
 
-        Internal_Stack : Stack;
-        Stack_Size : Natural := 0;
-
+        type Stack is tagged
+        record
+            Internal_Stack : Stack_Array;
+            Stack_Size : Natural := 0;
+        end record;
     end Stack_Package;
 
     --   Call algorithim
@@ -35,5 +41,9 @@ package ShuntingYardAlgorithm is
     with Export => True,
          Convention => C,
          External_Name => "free_string";
+
+private
+    type Operator_Enum is ('^', '*', '/', '+', '-', '(', ')');
+    type Operator_Precedence_Enum is (Greater, Lesser, Equal);
 
 end ShuntingYardAlgorithm;

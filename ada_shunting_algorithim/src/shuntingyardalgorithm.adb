@@ -6,28 +6,58 @@ with Ada.Exceptions; use Ada.Exceptions;
 
 package body ShuntingYardAlgorithm is
 
+    Precidence_Map : constant array (Operator_Enum'Range) of Natural :=
+    (
+        '^' => 4,
+        '*' => 3,
+        '/' => 3,
+        '+' => 2,
+        '-' => 2,
+        '(' => 1,
+        ')' => 1
+    );
+
+    function Compare_Operator (Left : Character;
+                               Right : Character)
+        return Operator_Precedence_Enum is
+    begin
+        return Equal;
+    end Compare_Operator;
+
     package body Stack_Package is
 
-        procedure Push (New_Item : Element) is
+        function Empty (Stack_Object : in out Stack)
+            return Boolean is
+        begin
+            return Stack_Object.Stack_Size = 0;
+        end Empty;
+
+        procedure Push (Stack_Object : in out Stack;
+                        New_Item : Element) is
 
         begin
-            if Stack_Size = Size then
+            if Stack_Object.Stack_Size = Size then
                 raise Constraint_Error;
             end if;
 
-            Stack_Size := Stack_Size + 1;
-            Internal_Stack (Stack_Size) := New_Item;
+            Stack_Object.Stack_Size :=
+                Stack_Object.Stack_Size + 1;
+            Stack_Object.Internal_Stack (
+                Stack_Object.Stack_Size
+            ) := New_Item;
         end Push;
 
-        function Pop return Element is
+        function Pop (Stack_Object : in out Stack) return Element is
             Return_Element : constant Element
-                := Internal_Stack (Stack_Size);
+                := Stack_Object.
+                    Internal_Stack (Stack_Object.Stack_Size);
         begin
-            if Stack_Size = 0 then
+            if Stack_Object.Stack_Size = 0 then
                 raise Constraint_Error;
             end if;
 
-            Stack_Size := Stack_Size - 1;
+            Stack_Object.Stack_Size :=
+                Stack_Object.Stack_Size - 1;
 
             return Return_Element;
         end Pop;
@@ -55,6 +85,63 @@ package body ShuntingYardAlgorithm is
         Out_Expression := Interfaces.C.Strings.New_String (
             Str => Msg
         );
+
+        declare
+
+            package Token_Stack_Package is
+                new Stack_Package (
+                    Element => Tokenizer.Token_Access_Type,
+                    Size => Natural (Token_Vector.all.Items.Length)
+                );
+
+            Operator_Stack : Token_Stack_Package.Stack;
+            Output_Queue : Tokenizer.Token_Vector_Type;
+        begin
+
+            for Current_Token_It in Token_Vector.all.Items.Iterate loop
+
+                declare
+                    use Tokenizer;
+
+                    Current_Token : constant
+                        Tokenizer.Token_Access_Type :=
+                            Tokenizer.Token_Vectors.Element (
+                                Position => Current_Token_It
+                            );
+
+                    Current_Token_Cat : constant
+                        Tokenizer.Catagory_Type := Tokenizer.
+                            Catagory (Token => Current_Token);
+                begin
+
+                    if Current_Token_Cat = Tokenizer.Number then
+
+                        Output_Queue.Items.Append (New_Item => Current_Token);
+
+                    elsif Current_Token_Cat = Tokenizer.Operator then
+
+                        while not Operator_Stack.Empty loop
+
+                            declare
+                                Top_Operator : Tokenizer.Token_Access_Type
+                                    := Operator_Stack.Pop;
+                            begin
+
+                                null;
+
+                            end;
+
+                        end loop;
+
+                    else
+                        null;
+                    end if;
+
+                end;
+            end loop;
+
+        end;
+
     exception
 
         when E : others =>
