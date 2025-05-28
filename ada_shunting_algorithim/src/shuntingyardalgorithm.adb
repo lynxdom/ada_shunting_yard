@@ -6,6 +6,34 @@ with Ada.Exceptions; use Ada.Exceptions;
 
 package body ShuntingYardAlgorithm is
 
+    package body Stack_Package is
+
+        procedure Push (New_Item : Element) is
+
+        begin
+            if Stack_Size = Size then
+                raise Constraint_Error;
+            end if;
+
+            Stack_Size := Stack_Size + 1;
+            Internal_Stack (Stack_Size) := New_Item;
+        end Push;
+
+        function Pop return Element is
+            Return_Element : constant Element
+                := Internal_Stack (Stack_Size);
+        begin
+            if Stack_Size = 0 then
+                raise Constraint_Error;
+            end if;
+
+            Stack_Size := Stack_Size - 1;
+
+            return Return_Element;
+        end Pop;
+
+    end Stack_Package;
+
     --    Call algorithim
     procedure Shunting_Yard_Algorithm (
         In_Expression  : in Interfaces.C.Strings.chars_ptr;

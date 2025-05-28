@@ -8,7 +8,13 @@ package body Tokenizer is
     --    FSM
     type FSM_Node_Type;
     type FSM_Node_Access_Type is access all FSM_Node_Type;
-    type FSM_Action_Type is (Skip, Start, Stay, Finalize, Transition);
+    type FSM_Action_Type is (Skip, Start, Stay, Finalize, Transition, Error);
+
+    package Tokenizer_Exceptions is
+
+        Tokenizer_Error : exception;
+
+    end Tokenizer_Exceptions;
 
     type Classifier_Mapping_Type is
         record
@@ -41,7 +47,7 @@ package body Tokenizer is
     );
 
     Digit_One_Node : aliased FSM_Node_Type := (
-        Length => 2,
+        Length => 3,
         Mappings => (
             1 => (
                 Classifier => Classifiers.Is_Digit'Access,
@@ -50,9 +56,15 @@ package body Tokenizer is
                 Token_Type => Unknown
             ),
             2 => (
-                Classifier => Classifiers.Out_Of_Set'Access,
+                Classifier => Is_White_Space'Access,
                 Next_Node => null,
                 Action => Finalize,
+                Token_Type => Unknown
+            ),
+            3 => (
+                Classifier => Classifiers.Out_Of_Set'Access,
+                Next_Node => null,
+                Action => Error,
                 Token_Type => Unknown
             )
         )
@@ -106,7 +118,7 @@ package body Tokenizer is
             8 => (
                 Classifier => Out_Of_Set'Access,
                 Next_Node => null,
-                Action => Skip,
+                Action => Error,
                 Token_Type => Unknown
             )
         )
@@ -200,6 +212,13 @@ package body Tokenizer is
 
                                     Postition.all := Postition.all + 1;
                                     exit Classifier_Loop;
+
+                                when Error =>
+                                    raise Tokenizer_Exceptions.Tokenizer_Error
+                                    with "Token exception at " &
+                                            Natural'Image (Postition.all) &
+                                         " Character " &
+                                            Character'Image (Char);
 
                             end case;
 
