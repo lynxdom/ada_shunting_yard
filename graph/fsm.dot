@@ -1,0 +1,7 @@
+digraph FSM {
+    rankdir=LR;
+    node [shape = circle];
+
+    First_Character -> UnaryMinus [label = "Start Number Token"];
+    First_Character -> Digit [label = "Start Number Token"];
+}

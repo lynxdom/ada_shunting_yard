@@ -1,6 +1,9 @@
 with Tokenizer;
 pragma Elaborate_All (Tokenizer);
 
+with Token;
+use Token;
+
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Exceptions; use Ada.Exceptions;
 
@@ -90,7 +93,7 @@ package body ShuntingYardAlgorithm is
 
             package Token_Stack_Package is
                 new Stack_Package (
-                    Element => Tokenizer.Token_Access_Type,
+                    Element => Token_Access_Type,
                     Size => Natural (Token_Vector.all.Items.Length)
                 );
 
@@ -104,26 +107,25 @@ package body ShuntingYardAlgorithm is
                     use Tokenizer;
 
                     Current_Token : constant
-                        Tokenizer.Token_Access_Type :=
+                        Token_Access_Type :=
                             Tokenizer.Token_Vectors.Element (
                                 Position => Current_Token_It
                             );
 
                     Current_Token_Cat : constant
-                        Tokenizer.Catagory_Type := Tokenizer.
-                            Catagory (Token => Current_Token);
+                        Catagory_Type := Catagory (Item => Current_Token);
                 begin
 
-                    if Current_Token_Cat = Tokenizer.Number then
+                    if Current_Token_Cat = Number then
 
                         Output_Queue.Items.Append (New_Item => Current_Token);
 
-                    elsif Current_Token_Cat = Tokenizer.Operator then
+                    elsif Current_Token_Cat = Operator then
 
                         while not Operator_Stack.Empty loop
 
                             declare
-                                Top_Operator : Tokenizer.Token_Access_Type
+                                Top_Operator : Token_Access_Type
                                     := Operator_Stack.Pop;
                             begin
 
